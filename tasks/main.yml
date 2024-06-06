@@ -16,3 +16,14 @@
     name: "{{ item }}"
     state: present
   with_items: "{{ unbound_packages }}"
+
+- name: Ensure unbound is running
+  ansible.builtin.service:
+    name: "{{ unbound_service_name }}"
+    state: started
+    enabled: true
+
+- name: Check if port 53 is open
+  ansible.builtin.wait_for:
+    host: 127.0.0.1
+    port: 53
