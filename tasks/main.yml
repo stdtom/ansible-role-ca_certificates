@@ -1,6 +1,12 @@
 ---
 # tasks file for ca_certificates
 
+- name: Import assert.yml
+  ansible.builtin.import_tasks:
+    file: assert.yml
+  run_once: true
+  delegate_to: localhost
+
 - name: Debugging
   ansible.builtin.debug:
     msg: "{{ ansible_distribution_release }} / {{ ansible_distribution }} / {{ ansible_os_family }}"
