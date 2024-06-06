@@ -10,3 +10,14 @@
 - name: Debugging
   ansible.builtin.debug:
     msg: "{{ ansible_distribution_release }} / {{ ansible_distribution }} / {{ ansible_os_family }}"
+
+- name: Get netstat output
+  ansible.builtin.command: "{{ unbound_list_port_command }}"
+  register: result
+  changed_when: false
+  when: unbound_verify_debug
+
+- name: Show netstat output
+  ansible.builtin.debug:
+    msg: '{{ result.stdout_lines }}'
+  when: unbound_verify_debug

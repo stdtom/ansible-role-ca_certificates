@@ -1,5 +1,41 @@
 ---
-# vars file for ca_certificates
+# vars file for unbound
 
-ca_certificates_packages:
-  - ca-certificates
+_unbound_packages:
+  default:
+    - unbound
+  Debian:
+    - dns-root-data
+    - unbound-anchor
+    - unbound
+
+unbound_packages: "{{ _unbound_packages[ansible_os_family] | default(_unbound_packages['default']) }}"
+
+
+_unbound_service_name:
+  default: unbound
+
+unbound_service_name: "{{ _unbound_service_name[ansible_os_family] | default(_unbound_service_name['default']) }}"
+
+
+_unbound_pythondns_package_name:
+  default: unknown_package_name
+  Debian: python3-dns
+  RedHat: python3-dns
+
+unbound_pythondns_package_name: "{{ _unbound_pythondns_package_name[ansible_os_family] | default(_unbound_pythondns_package_name['default']) }}"
+
+
+_unbound_dig_package_name:
+  default: unknown_package_name
+  Debian: dnsutils
+  RedHat: bind-utils
+
+unbound_dig_package_name: "{{ _unbound_dig_package_name[ansible_os_family] | default(_unbound_dig_package_name['default']) }}"
+
+
+_unbound_list_port_command:
+  default: "netstat -tulpen"
+  RedHat: "ss -tulpen"
+
+unbound_list_port_command: "{{ _unbound_list_port_command[ansible_os_family] | default(_unbound_list_port_command['default']) }}"
