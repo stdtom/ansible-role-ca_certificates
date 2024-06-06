@@ -5,3 +5,7 @@
   ansible.builtin.package:
     name: "{{ ca_certificates_packages }}"
     state: present
+
+- name: Debugging
+  ansible.builtin.debug:
+    msg: "{{ ansible_distribution_release }} / {{ ansible_distribution }} / {{ ansible_os_family }}"
