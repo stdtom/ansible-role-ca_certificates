@@ -17,6 +17,17 @@
     state: present
   with_items: "{{ unbound_packages }}"
 
+- name: Include OS specific tasks if defined
+  ansible.builtin.include_tasks:
+    file: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_distribution_release }}.yml"
+        - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+        - "default.yml"
+      skip: true
+
 - name: Ensure unbound is running
   ansible.builtin.service:
     name: "{{ unbound_service_name }}"
